@@ -17,6 +17,32 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+
+  const cardDiv = document.createElement('div');
+  cardDiv.className = 'card';
+
+  const headlineDiv = document.createElement('div');
+  headlineDiv.className = 'headline';
+  headlineDiv.textContent = article.headline;
+
+  const authorDiv = document.createElement('div');
+  authorDiv.className = 'author';
+
+  const imgDiv = document.createElement('div');
+  imgDiv.className = 'img-container';
+
+  const img = document.createElement('img');
+  img.src = article.authorPhoto;
+
+  const authorName = document.createElement('span');
+  authorName.textContent = 'By ' + article.authorName;
+
+  imgDiv.appendChild(img);
+  authorDiv.appendChild(imgDiv);
+  authorDiv.appendChild(authorName);
+  cardDiv.appendChild(headlineDiv);
+  cardDiv.appendChild(authorDiv);
+  document.querySelector('.cards-container').appendChild(cardDiv);
 }
 
 const cardAppender = (selector) => {
@@ -28,6 +54,14 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  
+  axios.get('https://lambda-times-api.herokuapp.com/articles')
+    .then(response => {
+      // Tabs(response.data.topics); //no .topics??
+    })
+    .catch(error => {
+      console.log('error:', error);
+    })
 }
 
 export { Card, cardAppender }
