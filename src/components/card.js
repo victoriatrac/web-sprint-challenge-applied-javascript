@@ -1,3 +1,6 @@
+const CardDiv = document.createElement('div');
+CardDiv.className = 'card';
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -17,6 +20,36 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+
+  const articles = article.articles;
+
+  for (const property in articles) {
+    const arr = articles[property];
+    arr.forEach(item => {
+
+      const headlineDiv = document.createElement('div');
+      headlineDiv.className = 'headline';
+      headlineDiv.textContent = item.headline;
+
+      const authorDiv = document.createElement('div');
+      authorDiv.className = 'author';
+
+      const imgDiv = document.createElement('div');
+      imgDiv.className = 'img-container';
+
+      const img = document.createElement('img');
+      img.src = item.authorPhoto;
+
+      const authorSpan = document.createElement('span');
+      authorSpan.textContent = 'By ' + item.authorName;
+
+      CardDiv.appendChild(headlineDiv);
+      imgDiv.appendChild(img);
+      authorDiv.appendChild(imgDiv);
+      authorDiv.appendChild(authorSpan);
+      CardDiv.appendChild(authorDiv);
+    })
+  }
 }
 
 const cardAppender = (selector) => {
@@ -28,6 +61,19 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+
+  fetch('https://lambda-times-api.herokuapp.com/articles').then(res => {
+    if (res.ok) {
+      return res.json();
+    }
+    throw new Error(res)
+  })
+  .catch(console.err)
+  .then(res => {
+    Card(res);
+  })
+  
+  document.querySelector(selector).appendChild(CardDiv);
 }
 
 export { Card, cardAppender }
